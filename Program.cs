@@ -6,10 +6,10 @@ namespace OldPhonePadApp
 {
     class Program
     {
-        // Method to convert input string to message based on old phone keypad
+        // convert string to message
         public static string OldPhonePad(string input)
         {
-            // 1. Define a dictionary to map numbers to letters.
+            // dictionary
             Dictionary<char, string> keypad = new Dictionary<char, string>()
             {
                 {'1', "&'("},
@@ -24,57 +24,53 @@ namespace OldPhonePadApp
                 {'0', " "}
             };
 
-            // 2. Create a StringBuilder to build the final result.
+            // final result
             StringBuilder result = new StringBuilder();
 
-            // 3. Declare variables to track:
-            char lastChar = '\0';  // the last pressed character
-            int count = 0;         // number of consecutive presses
+            // track
+            char lastChar = '\0'; 
+            int count = 0;         
 
-            // 4. Loop through each character in the input string.
+            // Loop through each character
             foreach (char c in input)
             {
                 if (c == '#')
                 {
-                    // End of input
+                    // End
                     break;
                 }
                 else if (c == '*')
                 {
-                    // Backspace operation
                     if (result.Length > 0)
                         result.Remove(result.Length - 1, 1);
                 }
                 else if (c == ' ')
                 {
-                    // Pause between keypresses
+                    // Pause 
                     lastChar = '\0';
                     count = 0;
                 }
                 else
                 {
-                    // If the same as the last button pressed
                     if (c == lastChar)
                     {
                         count++;
                     }
                     else
                     {
-                        // If there's a previous character to resolve
                         if (lastChar != '\0' && keypad.ContainsKey(lastChar))
                         {
                             string letters = keypad[lastChar];
                             int index = (count - 1) % letters.Length;
                             result.Append(letters[index]);
                         }
-                        // Update for new keypress
                         lastChar = c;
                         count = 1;
                     }
                 }
             }
 
-            // 5. Handle any last pending character after the loop
+            // Pending character
             if (lastChar != '\0' && keypad.ContainsKey(lastChar))
             {
                 string letters = keypad[lastChar];
@@ -82,11 +78,11 @@ namespace OldPhonePadApp
                 result.Append(letters[index]);
             }
 
-            // 6. Return the final message
+            // Return final message
             return result.ToString();
         }
 
-        // Test cases to verify the method
+        // Test
         static void Main(string[] args)
         {
             Console.WriteLine(OldPhonePad("33#"));                     // Expected: E
