@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace OldPhonePadApp
 {
     class Program
     {
-        // convert string to message
+        // Convert input to a message
         public static string OldPhonePad(string input)
         {
-            // dictionary
-            Dictionary<char, string> keypad = new Dictionary<char, string>()
+            // Dictionary
+            var keypad = new Dictionary<char, string>()
             {
                 {'1', "&'("},
                 {'2', "ABC"},
@@ -21,74 +20,81 @@ namespace OldPhonePadApp
                 {'7', "PQRS"},
                 {'8', "TUV"},
                 {'9', "WXYZ"},
-                {'0', " "}
+                {'0', " "} // Space
             };
 
-            // final result
-            StringBuilder result = new StringBuilder();
+            // Store final message
+            string result = "";
 
-            // track
-            char lastChar = '\0'; 
-            int count = 0;         
+            // Pressed last
+            char lastChar = '\0';  // Nothing pressed
+            int count = 0;         // How many times we've pressed that button
 
-            // Loop through each character
+            // Go through each character the user pressed
             foreach (char c in input)
             {
                 if (c == '#')
                 {
-                    // End
+                    // End of message - stop reading
                     break;
                 }
                 else if (c == '*')
                 {
+                    // Backspace - remove last letter from result
                     if (result.Length > 0)
-                        result.Remove(result.Length - 1, 1);
+                    {
+                        result = result.Substring(0, result.Length - 1);
+                    }
                 }
                 else if (c == ' ')
                 {
-                    // Pause 
+                    // Pause - reset last key pressed
                     lastChar = '\0';
                     count = 0;
                 }
                 else
                 {
+                    // If it's the same button as before
                     if (c == lastChar)
                     {
-                        count++;
+                        count++; // press again
                     }
                     else
                     {
-                        if (lastChar != '\0' && keypad.ContainsKey(lastChar))
+                        // If it's a different button and last one wasn't empty, resolve last one
+                        if (lastChar != '\0')
                         {
                             string letters = keypad[lastChar];
                             int index = (count - 1) % letters.Length;
-                            result.Append(letters[index]);
+                            result += letters[index]; // add letter to result
                         }
+
+                        // Update to new button
                         lastChar = c;
                         count = 1;
                     }
                 }
             }
 
-            // Pending character
-            if (lastChar != '\0' && keypad.ContainsKey(lastChar))
+            // At the end, add the last character if needed
+            if (lastChar != '\0')
             {
                 string letters = keypad[lastChar];
                 int index = (count - 1) % letters.Length;
-                result.Append(letters[index]);
+                result += letters[index];
             }
 
             // Return final message
-            return result.ToString();
+            return result;
         }
 
-        // Test
+        // TEST
         static void Main(string[] args)
         {
             Console.WriteLine(OldPhonePad("33#"));                     // E
             Console.WriteLine(OldPhonePad("227*#"));                  // B
             Console.WriteLine(OldPhonePad("4433555 555666#"));        // HELLO
-            Console.WriteLine(OldPhonePad("8 88777444666*664#"));     // TEST
+            Console.WriteLine(OldPhonePad("8 88777444666*664#"));     // TURING
         }
     }
 }
