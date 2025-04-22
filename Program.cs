@@ -85,10 +85,10 @@ namespace OldPhonePadApp
         // Test
         static void Main(string[] args)
         {
-            Console.WriteLine(OldPhonePad("33#"));                     // Expected: E
-            Console.WriteLine(OldPhonePad("227*#"));                  // Expected: B
-            Console.WriteLine(OldPhonePad("4433555 555666#"));        // Expected: HELLO
-            Console.WriteLine(OldPhonePad("8 88777444666*664#"));     // Expected: TEST
+            Console.WriteLine(OldPhonePad("33#"));                     // E
+            Console.WriteLine(OldPhonePad("227*#"));                  // B
+            Console.WriteLine(OldPhonePad("4433555 555666#"));        // HELLO
+            Console.WriteLine(OldPhonePad("8 88777444666*664#"));     // TEST
         }
     }
 }
